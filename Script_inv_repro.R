@@ -5,7 +5,7 @@ library(repmis)
 #save(parque_automotor, file = "parque_automotor.RData")
 #primer cambio efectuado
 #datos= parque_automotor %>% filter(!(PAR_TIPO_VENTA=="ANEXO"))
-parque_automotor= datos
+datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
 
 
 
