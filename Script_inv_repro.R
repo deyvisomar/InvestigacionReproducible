@@ -7,6 +7,7 @@ library(repmis)
 #load("parque_automotor.RData")
 #primer cambio efectuado
 #datos= parque_automotor %>% filter(!(PAR_TIPO_VENTA=="ANEXO"))
+#primer gráfico
 datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
 p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
   geom_bar(position = "dodge")
