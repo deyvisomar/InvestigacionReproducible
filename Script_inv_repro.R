@@ -1,11 +1,13 @@
 #Comenzando
 library(tidyverse)
 library(repmis)
-source_data("https://github.com/deyvisomar/InvestigacionReproducible/blob/main/base_datos_persona.RData?raw=false")
+#source_data("https://github.com/deyvisomar/InvestigacionReproducible/blob/main/base_datos_persona.RData?raw=false")
+#save(parque_automotor, file = "parque_automotor.RData")
 #primer cambio efectuado
-base_personas= Persona
-#solo filtro datos de hombres para contar
-datos= base_personas %>% filter(s2_02==1)
+#datos= parque_automotor %>% filter(!(PAR_TIPO_VENTA=="ANEXO"))
+parque_automotor= datos
 
-  
+
+
+
   
