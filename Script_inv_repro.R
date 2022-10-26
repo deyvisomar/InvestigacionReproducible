@@ -9,7 +9,6 @@ library(repmis)
 #datos= parque_automotor %>% filter(!(PAR_TIPO_VENTA=="ANEXO"))
 #parque_automotor= parque_automotor[sample(dim(parque_automotor)[1],200000, replace= F),]
 #primer gráfico
-
 datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
 p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
   geom_bar(position = "dodge")
