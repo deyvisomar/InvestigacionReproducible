@@ -1,0 +1,87 @@
+---
+title: "INTRODUCCIÓN A LA INVESTIGACIÓN REPRODUCIBLE"
+#output: github_document
+output: 
+  html_document:
+    theme: cerulean
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+En este documento crearemos los primeros resultados para investigación reproducible, usando Github, Markdown, Shiny y Latex.
+
+enlace del [*Repositorio*](https://github.com/deyvisomar/InvestigacionReproducible)
+
+## Primera vista a los datos
+
+```{r, echo=FALSE, message=FALSE}
+
+library(plotly)
+library(repmis)
+library(DT)
+load("parque_automotor.RData")
+```
+
+Descarga la base de datos del repositorio:
+
+```{r,message=FALSE, eval=FALSE}
+source_data("https://github.com/deyvisomar/InvestigacionReproducible/blob/main/parque_automotor.RData?raw=false")
+```
+
+### Primer gráfico:
+
+```{r}
+datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
+head(datos)
+#datatable(datos, options = list(pageLength = 5))
+```
+
+### Primer Gráfico interactivo
+
+
+```{r, eval=TRUE}
+library(plotly)
+datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
+p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
+  geom_bar(position = "dodge")
+ggplotly(p)
+```
+
+### Segundo 
+
+```{r, echo=FALSE}
+library(shiny)
+selectInput("datos", "Seleccion departamento", choices = unique(parque_automotor$DEPARTAMENTO))
+
+```
+
+Ver el grafico por departamento
+
+```{r,}
+#library(plotly)
+renderPlotly({
+ datos= parque_automotor %>% filter(DEPARTAMENTO %in% input$datos )
+p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
+  geom_bar(position = "dodge")
+ggplotly(p)
+})
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
