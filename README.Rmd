@@ -20,7 +20,8 @@ enlace del [*Repositorio*](https://github.com/deyvisomar/InvestigacionReproducib
 ## Primera vista a los datos
 
 ```{r, echo=FALSE, message=FALSE}
-
+library(tidyverse)
+library(dplyr)
 library(plotly)
 library(repmis)
 library(DT)
@@ -33,32 +34,32 @@ Descarga la base de datos del repositorio:
 source_data("https://github.com/deyvisomar/InvestigacionReproducible/blob/main/parque_automotor.RData?raw=false")
 ```
 
-### Primer gráfico:
 
-```{r}
-datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
-head(datos)
-#datatable(datos, options = list(pageLength = 5))
-```
-
-### Primer Gráfico interactivo
+### **Primer Gráfico interactivo**
 
 
 ```{r, eval=TRUE}
 library(plotly)
-datos= parque_automotor %>% filter(DEPARTAMENTO=="LA PAZ")
+datos= parque_automotor %>% filter(DEPARTAMENTO=="SANTA CRUZ")
+datos= datos[sample(1:nrow(datos), 100000, replace = T),]
 p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
   geom_bar(position = "dodge")
 ggplotly(p)
 ```
 
-### Segundo 
+La cantidad de **Camionetas** de uso particular en el departamento de **`r unique(datos$DEPARTAMENTO)`** es **`r datos %>% filter(TIPO_VEHICULO=="CAMIONETA" & TIPO_USO=="PARTICULAR") %>% nrow()`** vehículos y para el uso público son **`r datos %>% filter(TIPO_VEHICULO=="CAMIONETA" & TIPO_USO=="PUBLICO") %>% nrow()`** vehículos.
+
+La cantidad de **Motocicletas** de uso particular en el departamento de **`r unique(datos$DEPARTAMENTO)`** es **`r datos %>% filter(TIPO_VEHICULO=="MOTOCICLETA" & TIPO_USO=="PARTICULAR") %>% nrow()`** vehículos y para el uso público son **`r datos %>% filter(TIPO_VEHICULO=="MOTOCICLETA" & TIPO_USO=="PUBLICO") %>% nrow()`** vehículos.
+
+
+### **Segundo gráfico con un selector** 
 
 ```{r, echo=FALSE}
 library(shiny)
 selectInput("datos", "Seleccion departamento", choices = unique(parque_automotor$DEPARTAMENTO))
 
 ```
+
 
 Ver el grafico por departamento
 
@@ -71,6 +72,64 @@ p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
 ggplotly(p)
 })
 ```
+
+
+### **Gráfico con dos opciones de cambio**
+
+```{r, echo=FALSE}
+library(shiny)
+selectInput("datosdep", "Seleccion departamento", choices = unique(parque_automotor$DEPARTAMENTO))
+
+numericInput("num","Tamaño de muestra",100,1000,dim(parque_automotor)[1],5000)
+
+```
+
+El código y gráfico es de la siguiente manera:
+
+```{r,}
+#library(plotly)
+renderPlotly({
+ datos1= parque_automotor %>% filter(DEPARTAMENTO %in% input$datosdep )
+ datos1= datos1[sample(1:dim(datos1)[1], input$num, replace = FALSE),]
+p= ggplot(data= datos1, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
+  geom_bar(position = "dodge")
+ggplotly(p)
+})
+```
+
+## **Gráfico de torta**
+
+```{r, echo=FALSE}
+library(shiny)
+selectInput("datos11", "Seleccion departamento", choices = unique(parque_automotor$DEPARTAMENTO))
+
+numericInput("num11","Tamaño de muestra",100,100,dim(parque_automotor)[1],500)
+
+```
+
+
+El siguiente gráfico muestra como se distribuye el tipo de movilidad en el departamento seleccionado:
+
+
+```{r, eval=TRUE}
+library(plotly)
+renderPlotly({
+datos1= parque_automotor %>% filter(DEPARTAMENTO %in% input$datos11 )
+ datos1= datos[sample(1:dim(datos1)[1], input$num11, replace = TRUE),]
+fig <- plot_ly(datos1, labels = ~TIPO_VEHICULO, type = 'pie')
+fig  
+})
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
