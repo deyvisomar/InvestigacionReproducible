@@ -16,7 +16,7 @@ p= ggplot(data= datos, aes(x= TIPO_USO, fill=TIPO_VEHICULO))+
 ggplotly(p)
 
 
-sesion 27 de octubre
+#sesion 27 de octubre
 
 
 
